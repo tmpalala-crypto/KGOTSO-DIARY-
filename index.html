@@ -6,75 +6,58 @@
 <title>KGOTSO DIARY</title>
 <style>
 :root{--green:#0a4d2b;--gold:#c9a44a;--dark:#0f2a1f}
-body{margin:0;font-family:Arial;background:var(--dark);color:#fff}
-.screen{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:15px;text-align:center}
-.cover{width:100%;max-width:340px;border-radius:20px;box-shadow:0 15px 40px rgba(0,0,0,.4)}
-.logo{width:85px;border-radius:14px;border:2px solid var(--gold);margin:10px}
-h1{color:var(--gold);letter-spacing:2px;margin:5px}
+body{margin:0;font-family:Arial;background:var(--dark)}
+.screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+.cover-page{background:#fff;color:#111}
+.cover-img{width:100%;max-width:380px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.btn{background:linear-gradient(90deg,var(--green),var(--gold));color:#fff;padding:14px 28px;border:none;border-radius:12px;font-weight:bold;font-size:16px;margin-top:20px;cursor:pointer}
 .card{background:#1a3d2e;border:2px solid var(--gold);padding:18px;border-radius:18px;margin:15px}
-input,textarea,select{width:100%;padding:13px;margin:7px 0;border-radius:12px;border:none;font-size:15px;box-sizing:border-box}
-button{background:linear-gradient(90deg,var(--green),var(--gold));color:#fff;padding:14px;border:none;border-radius:12px;font-weight:bold;width:100%;font-size:16px}
+input,textarea,select{width:100%;padding:13px;margin:7px 0;border-radius:12px;border:none;box-sizing:border-box;font-size:15px}
 .entry{background:#fff;color:#111;padding:14px;border-radius:14px;margin:12px 15px;border-left:6px solid var(--gold)}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 15px;background:#0a3d22;border-bottom:2px solid var(--gold)}
+.top{padding:12px 15px;background:#0a3d22;border-bottom:2px solid var(--gold);display:flex;justify-content:space-between;align-items:center;color:#fff}
 </style>
 </head>
 <body>
 
-<!-- COVER PAGE - SAME COLOURS AS LOGO -->
-<div id="coverScreen" class="screen" style="background:#fff;color:#111">
-<img src="cover.png" class="cover">
-<h1 style="color:#0a4d2b;margin-top:15px">KGOTSO DIARY</h1>
-<p style="color:var(--gold);letter-spacing:3px;font-weight:bold">SPIRITUAL DIARY</p>
-<button onclick="coverScreen.style.display='none';lockScreen.style.display='flex'" style="max-width:260px;margin-top:15px">OPEN DIARY 📖</button>
-<p style="font-size:11px;color:#888;margin-top:15px">Private • Prophetic • Offline</p>
+<!-- COVER PAGE USING YOUR IMAGE -->
+<div id="cover" class="screen cover-page">
+<img src="cover.png" class="cover-img">
+<p style="color:var(--green);font-weight:bold;letter-spacing:2px;margin-top:15px">PRIVATE • PROPHETIC • SPIRITUAL</p>
+<button class="btn" onclick="cover.style.display='none';lock.style.display='flex'">OPEN DIARY 📖</button>
 </div>
 
-<!-- LOCK SCREEN -->
-<div id="lockScreen" class="screen" style="display:none;background:radial-gradient(circle at top, #1a5a35, #0f2a1f);color:#fff">
-<img src="logo.png" class="logo">
-<h1>KGOTSO DIARY</h1>
-<p style="color:var(--gold)">PRIVATE - Enter PIN</p>
+<!-- LOCK -->
+<div id="lock" class="screen" style="display:none;background:radial-gradient(circle at top,#1a5a35,#0f2a1f);color:#fff">
+<img src="logo.png" style="width:110px;border-radius:16px;border:3px solid var(--gold)">
+<h2 style="color:var(--gold)">KGOTSO DIARY</h2>
 <input type="password" id="pin" placeholder="PIN: 1234" style="max-width:220px;text-align:center">
-<button onclick="unlock()" style="max-width:220px;margin-top:12px">UNLOCK 🙏</button>
-<button onclick="lockScreen.style.display='none';coverScreen.style.display='flex'" style="max-width:220px;background:#333;margin-top:10px">BACK TO COVER</button>
+<button class="btn" onclick="if(pin.value=='1234'){lock.style.display='none';main.style.display='block';load()}else alert('Wrong PIN')" style="max-width:220px">UNLOCK 🙏</button>
+<button class="btn" style="background:#333;margin-top:10px;max-width:220px" onclick="lock.style.display='none';cover.style.display='flex'">BACK TO COVER</button>
 </div>
 
-<!-- MAIN APP -->
-<div id="mainApp" style="display:none">
-<div class="topbar">
-<div style="display:flex;align-items:center;gap:10px"><img src="logo.png" style="width:45px;border-radius:10px"><div><b style="color:var(--gold)">KGOTSO</b><br><small>Spiritual Diary</small></div></div>
-<span id="count" style="background:var(--gold);color:#000;padding:4px 10px;border-radius:20px;font-size:12px">0</span>
-</div>
+<!-- MAIN DIARY -->
+<div id="main" style="display:none">
+<div class="top"><div style="display:flex;gap:10px;align-items:center"><img src="logo.png" style="width:45px;border-radius:10px"><div><b style="color:var(--gold)">KGOTSO DIARY</b><br><small>Spiritual Diary</small></div></div><span id="count" style="background:var(--gold);color:#000;padding:5px 10px;border-radius:20px;font-size:12px">0</span></div>
 
 <div class="card">
 <input type="date" id="dDate">
-<input type="text" id="dFor" placeholder="For: Name / Self / Church">
-<textarea id="dText" rows="4" placeholder="Write Vision / Prophecy / Dream..."></textarea>
-<select id="dType"><option>🔮 Prophecy</option><option>👁️ Vision</option><option>💭 Dream</option><option>🙏 Prayer</option><option>📅 Planning - Kopano</option></select>
+<input type="text" id="dFor" placeholder="For: Name / Church / Self">
+<textarea id="dText" rows="4" placeholder="Write Prophecy / Vision / Dream..."></textarea>
+<select id="dType"><option>🔮 Prophecy</option><option>👁️ Vision</option><option>💭 Dream</option><option>🙏 Prayer</option><option>📅 Planning</option></select>
 <select id="dStatus"><option>⏳ Waiting</option><option>✅ Fulfilled</option><option>🔥 Urgent</option><option>🕊️ Private</option></select>
-<button onclick="saveEntry()">SAVE ✨</button>
+<button class="btn" onclick="save()">SAVE ✨</button>
 </div>
 
-<div style="padding:0 15px"><input type="text" id="search" placeholder="🔍 Search..." onkeyup="loadEntries()"></div>
+<div style="padding:0 15px"><input type="text" id="search" placeholder="🔍 Search prophecies..." onkeyup="load()" style="background:#fff"></div>
 <div id="list"></div>
-<div style="padding:20px"><button onclick="location.reload()" style="background:#333">LOCK 🔒</button></div>
+<div style="padding:20px"><button class="btn" style="background:#333" onclick="location.reload()">LOCK 🔒</button></div>
 </div>
 
 <script>
-let entries=JSON.parse(localStorage.getItem('kgotso_final')||'[]');
-function unlock(){if(document.getElementById('pin').value==='1234'){lockScreen.style.display='none';mainApp.style.display='block';loadEntries()}else alert('Wrong PIN - 1234')}
-function saveEntry(){
- const e={date:dDate.value||new Date().toISOString().split('T')[0],for:dFor.value,text:dText.value,type:dType.value,status:dStatus.value,time:new Date().toLocaleString()};
- if(!e.text.trim()) return alert('Write first');
- entries.unshift(e);localStorage.setItem('kgotso_final',JSON.stringify(entries));dText.value='';dFor.value='';loadEntries();
-}
-function loadEntries(){
- const q=search.value.toLowerCase();
- const f=entries.filter(e=>(e.text+e.for).toLowerCase().includes(q));
- document.getElementById('count').textContent=f.length+' entries';
- document.getElementById('list').innerHTML=f.map((e,i)=>`<div class="entry"><div style="display:flex;justify-content:space-between"><small>${e.date} • ${e.type}</small><small style="background:#0a4d2b;color:#c9a44a;padding:2px 8px;border-radius:10px">${e.status}</small></div><b>For: ${e.for||'Self'}</b><p style="white-space:pre-wrap">${e.text}</p><div style="display:flex;justify-content:space-between"><small style="color:#666">${e.time}</small><small onclick="if(confirm('Delete?')){entries.splice(${i},1);localStorage.setItem('kgotso_final',JSON.stringify(entries));loadEntries()}" style="color:red">Delete</small></div></div>`).join('')||'<p style="text-align:center;color:#888;padding:20px">No entries yet 🙏</p>';
-}
-document.getElementById('dDate').valueAsDate=new Date();
+let entries=JSON.parse(localStorage.getItem('kgotso_diary_final')||'[]');
+function save(){const e={date:dDate.value||new Date().toISOString().split('T')[0],for:dFor.value,text:dText.value,type:dType.value,status:dStatus.value,time:new Date().toLocaleString()};if(!e.text.trim())return alert('Write first');entries.unshift(e);localStorage.setItem('kgotso_diary_final',JSON.stringify(entries));dText.value='';dFor.value='';load()}
+function load(){const q=search.value.toLowerCase();const f=entries.filter(e=>(e.text+e.for).toLowerCase().includes(q));count.textContent=f.length;list.innerHTML=f.map((e,i)=>`<div class="entry"><div style="display:flex;justify-content:space-between"><small>${e.date} • ${e.type}</small><small style="background:#0a4d2b;color:#c9a44a;padding:2px 8px;border-radius:10px">${e.status}</small></div><b>For: ${e.for||'Self'}</b><p style="white-space:pre-wrap">${e.text}</p><div style="display:flex;justify-content:space-between"><small style="color:#666">${e.time}</small><small onclick="if(confirm('Delete?')){entries.splice(${i},1);localStorage.setItem('kgotso_diary_final',JSON.stringify(entries));load()}" style="color:red;cursor:pointer">Delete</small></div></div>`).join('')||'<p style="text-align:center;color:#888;padding:30px">No entries yet - start writing 🙏</p>'}
+dDate.valueAsDate=new Date();
 </script>
 </body>
 </html>
